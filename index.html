@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Bancada Flow Nozzle</title>
+<title>Flow Nozzle Linha de Vapor</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -105,41 +105,41 @@ ul.diag span.s{display:block;color:var(--muted);font-size:.82rem}
 <div class="app">
   <header class="top">
     <div>
-      <p class="kicker">Engenharia Aeroespacial · bancada de testes de motor</p>
-      <h1>Flow Nozzle na admissão do motor</h1>
+      <p class="kicker">BICT · UFMA · Sistema de geração de energia a vapor</p>
+      <h1>Flow Nozzle na Linha de Vapor (Turbina)</h1>
       <p class="specs">
-        <span class="chip">Bocal ASME de raio longo</span>
-        <span class="chip">Duto Ø 900 mm</span>
-        <span class="chip">Garganta Ø 600 mm</span>
-        <span class="chip">β = 0,667</span>
-        <span class="chip">ISA nível do mar · 101,3 kPa · 15 °C</span>
+        <span class="chip">Bocal ISA 1932 / WIKA FLC-FN-FLN · Tomadas Corner Taps</span>
+        <span class="chip">Linha Ø 200 mm</span>
+        <span class="chip">Garganta Ø 70 mm</span>
+        <span class="chip">β = 0,35</span>
+        <span class="chip">Vapor superaquecido · 4.000 kPa (40 bar) · 400 °C · ρ ≈ 13,6 kg/m³</span>
       </p>
     </div>
     <button id="theme" class="ghost" type="button">Alternar tema</button>
   </header>
 
   <div class="grid">
-    <section class="stage" aria-label="Simulação do duto de admissão">
+    <section class="stage" aria-label="Simulação da linha de vapor">
       <div class="toolbar">
         <button id="run" class="primary" type="button" aria-pressed="false"><span id="run-label">Simular Regime de Potência</span></button>
         <div class="modes" role="group" aria-label="Regime de potência">
-          <button type="button" data-mode="idle" aria-pressed="true">Marcha Lenta <small>Idle · tecla 1</small></button>
-          <button type="button" data-mode="cruise" aria-pressed="false">Cruzeiro <small>tecla 2</small></button>
-          <button type="button" data-mode="takeoff" aria-pressed="false">Decolagem <small>Potência máx. · tecla 3</small></button>
+          <button type="button" data-mode="low" aria-pressed="true">Carga Baixa <small>40% · tecla 1</small></button>
+          <button type="button" data-mode="nominal" aria-pressed="false">Operação Nominal <small>75% · tecla 2</small></button>
+          <button type="button" data-mode="max" aria-pressed="false">Carga Máxima <small>100% · tecla 3</small></button>
         </div>
       </div>
       <div class="seqbar" id="seqbar" hidden><div id="seqfill"></div></div>
       <div class="slider-row">
         <label for="flow">Ajuste fino da vazão mássica</label>
-        <input id="flow" type="range" min="8" max="58" step="0.5" value="14">
-        <output id="flow-out" for="flow">14,0 kg/s</output>
+        <input id="flow" type="range" min="2" max="12" step="0.1" value="3.2">
+        <output id="flow-out" for="flow">3,20 kg/s</output>
       </div>
       <div class="canvaswrap">
-        <canvas id="cv" role="img" aria-label="Esquema do duto de admissão com Flow Nozzle, partículas de ar e curva de pressão estática ao longo do eixo"></canvas>
+        <canvas id="cv" role="img" aria-label="Esquema da linha de vapor com Flow Nozzle, partículas de vapor e curva de pressão estática ao longo do eixo"></canvas>
       </div>
       <div class="legend">
         <span>Cor da partícula: queda de pressão estática local</span>
-        <span><b id="lg-lo">101,3 kPa</b> (ambiente)</span>
+        <span><b id="lg-lo">—</b> (coletor, P₀)</span>
         <div class="bar" id="lg-bar"></div>
         <span><b id="lg-hi">—</b> (garganta, P₂)</span>
       </div>
@@ -168,10 +168,10 @@ ul.diag span.s{display:block;color:var(--muted);font-size:.82rem}
       <div class="card">
         <h2>Diagnóstico do escoamento</h2>
         <ul class="diag">
-          <li><i class="dot ok" id="dt-recirc"></i><div><strong id="d-recirc">—</strong><span class="s">Entrada e convergente, da boca de sino à garganta</span></div></li>
+          <li><i class="dot ok" id="dt-recirc"></i><div><strong id="d-recirc">—</strong><span class="s">Entrada e convergente, do coletor à garganta</span></div></li>
           <li><i class="dot ok" id="dt-grad"></i><div><strong id="d-grad">—</strong><span class="s">Gradiente de pressão ao longo do eixo</span></div></li>
           <li><i class="dot ok" id="dt-mach"></i><div><strong id="d-mach">—</strong><span class="s">Sem bloqueio sônico na garganta</span></div></li>
-          <li><i class="dot ok" id="dt-re"></i><div><strong id="d-re">—</strong><span class="s">Faixa de aplicação do bocal: 10⁴ a 10⁷</span></div></li>
+          <li><i class="dot ok" id="dt-re"></i><div><strong id="d-re">—</strong><span class="s">Faixa de aplicação do ISA 1932 (β < 0,44): 7 × 10⁴ a 10⁷</span></div></li>
         </ul>
       </div>
 
@@ -182,7 +182,7 @@ ul.diag span.s{display:block;color:var(--muted);font-size:.82rem}
     </aside>
   </div>
 
-  <p class="note">Premissas: ar seco, atmosfera ISA ao nível do mar (101,325 kPa, 288,15 K); vazões de regime ilustrativas para um motor de médio porte. Cd pela correlação ISO 5167-3 para bocal de raio longo; ΔP, ε e velocidades pelo escoamento isentrópico compressível entre as tomadas P₁ e P₂. A perda permanente é estimada como expansão brusca a jusante da garganta. A escala de tempo das partículas é reduzida em relação ao real.</p>
+  <p class="note">Premissas: vapor superaquecido a 4.000 kPa (40 bar) e 400 °C nas condições a montante (ρ ≈ 13,6 kg/m³), tratado como gás real equivalente (Z ≈ 0,946; κ = 1,3). Vazões de regime ilustrativas e proporcionais à carga (100% = 8 kg/s, cerca de 29 t/h). Cd pela correlação ISO 5167-3 do bocal ISA 1932 (β = 0,35); ΔP, ε e velocidades pelo escoamento isentrópico compressível entre as tomadas de canto, com P₂ tomada como a pressão estática da garganta. A perda permanente é estimada como expansão brusca a jusante da garganta. A escala de tempo das partículas é reduzida em relação ao real.</p>
 </div>
 
 <script>
@@ -190,16 +190,16 @@ ul.diag span.s{display:block;color:var(--muted);font-size:.82rem}
 'use strict';
 
 //<physics>
-const K=1.4, R=287.05, T0=288.15, P0=101325, MU=1.79e-5;
-const D_M=0.90, d_M=0.60, BETA=d_M/D_M;
+// Vapor superaquecido tratado como gás real equivalente: R_eq = Z·R_vapor (Z ≈ 0,946), κ = 1,3
+const K=1.3, R=436.5, P1_IN=4.0e6, T1_IN=673.15, MU=2.4e-5;
+const D_M=0.20, d_M=0.07, BETA=d_M/D_M;
 const CP=K*R/(K-1);
-const PCRIT=P0*Math.pow(2/(K+1),K/(K-1));
 const E_VEL=1/Math.sqrt(1-Math.pow(BETA,4));
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const smooth=s=>{s=clamp(s,0,1);return s*s*(3-2*s);};
 
 // Geometria em pixels de um palco de 1200 x 580 (D = 200 px)
-const GEO={cy:200,R:100,xB0:60,xB1:190,bB:38,x0:560,a:90,xT1:650,xJ:730,xJ2:950,xE:1000,xP1:360,xP2:660,wall:14};
+const GEO={cy:200,R:100,xB0:60,xB1:190,bB:38,x0:560,a:90,xT1:650,xJ:730,xJ2:950,xE:1000,xP1:556,xP2:734,wall:14};
 const rT=GEO.R*BETA;
 function radiusAt(x){
   const g=GEO;
@@ -212,21 +212,26 @@ function radiusAt(x){
   return g.R;
 }
 
-function massFlux(p){
-  const T=T0*Math.pow(p/P0,(K-1)/K);
-  const rho=p/(R*T);
-  const V=Math.sqrt(Math.max(0,2*CP*(T0-T)));
-  return rho*V;
+function makeSolver(P0,T0){
+  const pc=P0*Math.pow(2/(K+1),K/(K-1));
+  const flux=p=>{
+    const T=T0*Math.pow(p/P0,(K-1)/K);
+    return p/(R*T)*Math.sqrt(Math.max(0,2*CP*(T0-T)));
+  };
+  const qc=flux(pc);
+  return (A,mdot)=>{
+    const q=mdot/A;
+    if(q>=qc) return pc;
+    let lo=pc, hi=P0;
+    for(let i=0;i<48;i++){const m=0.5*(lo+hi);if(flux(m)>q) lo=m; else hi=m;}
+    return 0.5*(lo+hi);
+  };
 }
-const QCRIT=massFlux(PCRIT);
-function solveP(A,mdot){
-  const q=mdot/A;
-  if(q>=QCRIT) return PCRIT;
-  let lo=PCRIT, hi=P0;
-  for(let i=0;i<48;i++){const m=0.5*(lo+hi);if(massFlux(m)>q) lo=m; else hi=m;}
-  return 0.5*(lo+hi);
+// ISO 5167-3, bocal ISA 1932 (0,3 ≤ β < 0,44; 7·10⁴ ≤ Re_D ≤ 10⁷)
+function cdOf(Re){
+  const b=BETA;
+  return 0.99-0.2262*Math.pow(b,4.1)-(0.00175*b*b-0.0033*Math.pow(b,4.15))*Math.pow(1e6/Re,1.15);
 }
-function cdOf(Re){return 0.9965-0.00653*Math.sqrt(BETA)*Math.sqrt(1e6/Re);}
 
 const XS0=60, DX=8, NS=118;
 function computeState(mdot){
@@ -234,6 +239,10 @@ function computeState(mdot){
   const Re=4*mdot/(Math.PI*D_M*MU);
   const Cd=cdOf(Re);
   const mi=mdot/Cd;
+  // estagnação (coletor) tal que P1 = 4.000 kPa e T1 = 400 °C a montante, para qualquer vazão
+  const rhoIn=P1_IN/(R*T1_IN), M1=mi/(rhoIn*AD)/Math.sqrt(K*R*T1_IN), f1=1+0.5*(K-1)*M1*M1;
+  const T0=T1_IN*f1, P0=P1_IN*Math.pow(f1,K/(K-1));
+  const solveP=makeSolver(P0,T0);
   const p1=solveP(AD,mi), p2=solveP(At,mi);
   const T1=T0*Math.pow(p1/P0,(K-1)/K), T2=T0*Math.pow(p2/P0,(K-1)/K);
   const rho1=p1/(R*T1), rho2=p2/(R*T2);
@@ -252,7 +261,7 @@ function computeState(mdot){
   let adverse=false;
   for(let i=0;i<NS-1;i++){if(XS0+(i+1)*DX>GEO.xJ) break; if(p[i+1]>p[i]+0.5){adverse=true;break;}}
   const dP=p1-p2;
-  return {mdot,Re,Cd,mi,p1,p2,dP,rho1,rho2,Vt,perm,adverse,p,V,
+  return {mdot,Re,Cd,mi,p0:P0,p1,p2,dP,rho1,rho2,Vt,perm,adverse,p,V,
     Q:mdot/rho1, Mach:Vti/Math.sqrt(K*R*T2),
     eps:mi/(E_VEL*At*Math.sqrt(2*rho1*dP))};
 }
@@ -262,14 +271,15 @@ const $=id=>document.getElementById(id);
 const fmt=(v,n)=>v.toLocaleString('pt-BR',{minimumFractionDigits:n,maximumFractionDigits:n});
 
 const MODES={
-  idle:{label:'Marcha Lenta (Idle)',short:'MARCHA LENTA',mdot:14},
-  cruise:{label:'Cruzeiro',short:'CRUZEIRO',mdot:34},
-  takeoff:{label:'Decolagem (Potência Máxima)',short:'DECOLAGEM',mdot:52}
+  low:{label:'Carga Baixa (40%)',short:'CARGA BAIXA (40%)',mdot:3.2},
+  nominal:{label:'Operação Nominal (75%)',short:'OPERAÇÃO NOMINAL (75%)',mdot:6.0},
+  max:{label:'Carga Máxima (100%)',short:'CARGA MÁXIMA (100%)',mdot:8.0}
 };
-let modeKey='idle', target=MODES.idle.mdot, mdotCur=target, state=computeState(mdotCur);
-const refTakeoff=computeState(MODES.takeoff.mdot);
-const refMinKPa=refTakeoff.p2/1000;
-const chartLo=4*Math.floor((refMinKPa-2)/4), chartHi=chartLo+4*Math.ceil((102-chartLo)/4);
+let modeKey='low', target=MODES.low.mdot, mdotCur=target, state=computeState(mdotCur);
+const refMax=computeState(MODES.max.mdot);
+const chartStep=((refMax.p0-refMax.p2)/1000>50)?20:10;
+const chartLo=chartStep*Math.floor((refMax.p2/1000-4)/chartStep);
+const chartHi=chartLo+chartStep*Math.ceil((refMax.p0/1000+1-chartLo)/chartStep);
 
 /* ---------- tema ---------- */
 let TH={}, isDark=true, LUT=[];
@@ -399,10 +409,10 @@ function draw(){
   c.restore();
 
   // partículas
-  const span=Math.max(50,P0-S.p2);
+  const span=Math.max(50,S.p0-S.p2);
   for(const q of PTS){
     const i=clamp(Math.round((q.x-XS0)/DX),0,NS-1);
-    const t=clamp((P0-S.p[i])/span,0,1);
+    const t=clamp((S.p0-S.p[i])/span,0,1);
     c.fillStyle=LUT[Math.round(t*63)];
     c.beginPath(); c.arc(q.x,g.cy+q.f*radiusAt(q.x),1.9,0,6.2832); c.fill();
   }
@@ -431,31 +441,30 @@ function draw(){
   c.globalAlpha=1; c.lineCap='butt';
   c.fillStyle=TH.engineDark; c.strokeStyle=TH.wallEdge; c.lineWidth=2;
   c.beginPath(); c.ellipse(xf+14,g.cy,44,26,0,0,6.2832); c.fill(); c.stroke();
-  txt(c,'MOTOR EM ENSAIO',g.xE+88,g.cy+g.R+g.wall+22,{a:'center',s:11,f:F_MONO,c:TH.muted,w:500});
+  txt(c,'TURBINA A VAPOR',g.xE+88,g.cy+g.R+g.wall+22,{a:'center',s:11,f:F_MONO,c:TH.muted,w:500});
 
   // tomadas de pressão e transmissor
   const topY=g.cy-g.R-g.wall;
   c.strokeStyle=TH.accent; c.lineWidth=2;
   c.beginPath(); c.moveTo(g.xP1,g.cy-g.R); c.lineTo(g.xP1,30); c.lineTo(470,30); c.stroke();
-  c.setLineDash([5,4]); c.beginPath(); c.moveTo(g.xP2,g.cy-rT); c.lineTo(g.xP2,topY); c.stroke(); c.setLineDash([]);
-  c.beginPath(); c.moveTo(g.xP2,topY); c.lineTo(g.xP2,30); c.lineTo(670,30); c.stroke();
+  c.beginPath(); c.moveTo(g.xP2,g.cy-g.R); c.lineTo(g.xP2,30); c.lineTo(670,30); c.stroke();
   c.fillStyle=TH.surface; c.strokeStyle=TH.accent;
-  for(const [px,py] of [[g.xP1,g.cy-g.R],[g.xP2,g.cy-rT]]){c.beginPath();c.arc(px,py,5,0,6.2832);c.fill();c.stroke();}
+  for(const [px,py] of [[g.xP1,g.cy-g.R],[g.xP2,g.cy-g.R]]){c.beginPath();c.arc(px,py,5,0,6.2832);c.fill();c.stroke();}
   c.fillStyle=TH.engineDark; c.strokeStyle=TH.accent; c.lineWidth=2;
   c.beginPath(); c.roundRect(470,8,200,44,8); c.fill(); c.stroke();
   txt(c,'TRANSMISSOR DIFERENCIAL',570,22,{a:'center',s:9.5,f:F_MONO,c:TH.muted,w:500});
   txt(c,'ΔP = '+fmt(S.dP/1000,S.dP<3000?2:1)+' kPa',570,44,{a:'center',s:19,f:F_MONO,c:TH.fg,w:600});
-  txt(c,'P₁  '+fmt(S.p1/1000,1)+' kPa',g.xP1-10,g.cy-g.R-24,{a:'right',s:12.5,f:F_MONO,c:TH.accent,w:600});
-  txt(c,'1 D a montante',g.xP1-10,g.cy-g.R-9,{a:'right',s:10.5,c:TH.muted});
-  txt(c,'P₂  '+fmt(S.p2/1000,1)+' kPa',g.xP2+10,g.cy-g.R-24,{a:'left',s:12.5,f:F_MONO,c:TH.accent,w:600});
-  txt(c,'garganta',g.xP2+10,g.cy-g.R-9,{a:'left',s:10.5,c:TH.muted});
+  txt(c,'P₁  '+fmt(S.p1/1000,1)+' kPa',g.xP1-10,g.cy-g.R-30,{a:'right',s:12.5,f:F_MONO,c:TH.accent,w:600});
+  txt(c,'corner tap montante',g.xP1-10,g.cy-g.R-17,{a:'right',s:10.5,c:TH.muted});
+  txt(c,'P₂  '+fmt(S.p2/1000,1)+' kPa',g.xP2+10,g.cy-g.R-30,{a:'left',s:12.5,f:F_MONO,c:TH.accent,w:600});
+  txt(c,'corner tap jusante',g.xP2+10,g.cy-g.R-17,{a:'left',s:10.5,c:TH.muted});
 
   // anotações
-  txt(c,'AR AMBIENTE · 101,3 kPa · 15 °C',g.xB0,22,{s:11,f:F_MONO,c:TH.muted,w:500});
+  txt(c,'VAPOR SUPERAQUECIDO · 4.000 kPa · 400 °C',g.xB0,22,{s:11,f:F_MONO,c:TH.muted,w:500});
   txt(c,'escoamento →',g.xB0+4,g.cy+g.R+g.bB+36,{s:11,f:F_MONO,c:TH.muted});
-  txt(c,'FLOW NOZZLE ASME · RAIO LONGO',620,g.cy+g.R+g.wall+24,{a:'center',s:12,f:F_MONO,c:TH.accent,w:600});
-  txt(c,'Ø garganta 600 mm · β = 0,667',620,g.cy+g.R+g.wall+41,{a:'center',s:11,c:TH.muted});
-  txt(c,'convergente elíptico: escoamento anexado, sem separação',620,g.cy+g.R+g.wall+57,{a:'center',s:11,c:TH.muted});
+  txt(c,'BOCAL ISA 1932 / WIKA FLC-FN-FLN · TOMADAS CORNER TAPS',620,g.cy+g.R+g.wall+24,{a:'center',s:12,f:F_MONO,c:TH.accent,w:600});
+  txt(c,'Ø garganta 70 mm · β = 0,35',620,g.cy+g.R+g.wall+41,{a:'center',s:11,c:TH.muted});
+  txt(c,'convergente suave: escoamento anexado, sem separação',620,g.cy+g.R+g.wall+57,{a:'center',s:11,c:TH.muted});
   txt(c,'mistura a jusante (fora da zona de medição)',g.xJ+14,g.cy-g.R+14,{s:10,c:TH.muted});
   txt(c,'REGIME · '+(modeKey==='custom'?'AJUSTE MANUAL':MODES[modeKey].short),1190,26,{a:'right',s:15,f:F_MONO,c:TH.fg,w:600});
   txt(c,'ṁ = '+fmt(S.mdot,1)+' kg/s',1190,46,{a:'right',s:12,f:F_MONO,c:TH.muted});
@@ -466,12 +475,12 @@ function draw(){
   c.strokeStyle=TH.accent; c.lineWidth=2.5; c.beginPath(); c.moveTo(ch.x1-300,398); c.lineTo(ch.x1-272,398); c.stroke();
   txt(c,'atual',ch.x1-266,402,{s:11,c:TH.muted});
   c.strokeStyle=TH.ref; c.lineWidth=2; c.setLineDash([5,4]); c.beginPath(); c.moveTo(ch.x1-200,398); c.lineTo(ch.x1-172,398); c.stroke(); c.setLineDash([]);
-  txt(c,'decolagem (referência)',ch.x1-166,402,{s:11,c:TH.muted});
+  txt(c,'carga máxima (referência)',ch.x1-166,402,{s:11,c:TH.muted});
   c.lineWidth=1;
-  for(let v=chartLo;v<=chartHi;v+=4){
+  for(let v=chartLo;v<=chartHi;v+=chartStep){
     const y=ch.bot-((v-chartLo)/(chartHi-chartLo))*(ch.bot-ch.top);
     c.strokeStyle=TH.grid; c.beginPath(); c.moveTo(ch.x0,y); c.lineTo(ch.x1,y); c.stroke();
-    txt(c,String(v),ch.x0-8,y+4,{a:'right',s:11,f:F_MONO,c:TH.muted});
+    txt(c,fmt(v,0),ch.x0-8,y+4,{a:'right',s:11,f:F_MONO,c:TH.muted});
   }
   c.fillStyle=isDark?'rgba(76,201,240,0.08)':'rgba(10,110,160,0.08)';
   c.fillRect(g.x0,ch.top,g.xJ-g.x0,ch.bot-ch.top);
@@ -479,43 +488,46 @@ function draw(){
   c.strokeStyle=TH.ref; c.setLineDash([3,4]);
   for(const xx of [g.xP1,g.xP2]){c.beginPath();c.moveTo(xx,ch.top);c.lineTo(xx,ch.bot);c.stroke();}
   c.setLineDash([]);
-  drawChartCurve(c,refTakeoff,TH.ref,2,[5,4]);
+  drawChartCurve(c,refMax,TH.ref,2,[5,4]);
   drawChartCurve(c,S,TH.accent,2.8,null);
   for(const [xx,pp,lb] of [[g.xP1,S.p1,'P₁'],[g.xP2,S.p2,'P₂']]){
     c.fillStyle=TH.surface; c.strokeStyle=TH.accent; c.lineWidth=2.5;
     c.beginPath(); c.arc(xx,yP(pp),5,0,6.2832); c.fill(); c.stroke();
     txt(c,lb,xx+(lb==='P₁'?-9:9),yP(pp)-9,{a:lb==='P₁'?'right':'left',s:12,f:F_MONO,c:TH.accent,w:600});
   }
-  txt(c,'boca de sino',(g.xB0+g.xB1)/2,ch.bot+18,{a:'center',s:10.5,c:TH.muted});
-  txt(c,'duto Ø 900',(g.xB1+g.x0)/2+20,ch.bot+18,{a:'center',s:10.5,c:TH.muted});
-  txt(c,'jusante: expansão e recuperação parcial',(g.xJ+g.xE)/2+20,ch.bot+18,{a:'center',s:10.5,c:TH.muted});
-  txt(c,'entrada do motor',g.xE,ch.bot+18,{a:'right',s:10.5,c:TH.muted});
+  txt(c,'coletor',(g.xB0+g.xB1)/2,ch.bot+18,{a:'center',s:10.5,c:TH.muted});
+  txt(c,'linha Ø 200',(g.xB1+g.x0)/2+20,ch.bot+18,{a:'center',s:10.5,c:TH.muted});
+  c.font='400 10.5px '+F_SANS;
+  const wR=c.measureText('entrada da turbina').width;
+  txt(c,'entrada da turbina',g.xE,ch.bot+18,{a:'right',s:10.5,c:TH.muted});
+  txt(c,'jusante: expansão e recuperação',g.xE-wR-24,ch.bot+18,{a:'right',s:10.5,c:TH.muted});
 }
 
 /* ---------- telemetria (DOM) ---------- */
 function setDot(id,lvl){$(id).className='dot '+lvl;}
 function commentary(S,key){
   const dp=fmt(S.dP/1000,S.dP<3000?2:1), m=fmt(S.Mach,2), v=fmt(S.Vt,0), cd=fmt(S.Cd,4);
-  if(key==='idle') return 'Pouca vazão: V₂ = '+v+' m/s e ΔP = '+dp+' kPa. O sinal diferencial é pequeno, mas o contorno elíptico mantém o escoamento colado à parede e o Cd fica em '+cd+'. A pressão praticamente não varia, então ε ≈ 1.';
-  if(key==='cruise') return 'Vazão intermediária: o ar acelera até '+v+' m/s na garganta e a pressão estática cai '+dp+' kPa. O gradiente continua favorável em toda a convergência, sem separação, e o Cd se mantém em '+cd+'.';
-  if(key==='takeoff') return 'Potência máxima: garganta a Mach '+m+' e ΔP = '+dp+' kPa, o ponto mais vermelho do esquema. O escoamento segue subsônico e anexado; a compressibilidade entra por ε = '+fmt(S.eps,3)+' e o Cd permanece em '+cd+'.';
+  if(key==='low') return 'Carga baixa (40%): pouco vapor, V₂ = '+v+' m/s e ΔP = '+dp+' kPa. O contorno suave mantém o escoamento colado à parede e o Cd fica em '+cd+'. A densidade quase não varia na garganta, então ε ≈ '+fmt(S.eps,3)+'.';
+  if(key==='nominal') return 'Operação nominal (75%): o vapor acelera até '+v+' m/s na garganta e a pressão estática cai '+dp+' kPa. O gradiente continua favorável em toda a convergência, sem separação, e o Cd se mantém em '+cd+'.';
+  if(key==='max') return 'Carga máxima (100%): garganta a Mach '+m+' e ΔP = '+dp+' kPa, o ponto mais vermelho do esquema. O escoamento segue subsônico e anexado; a compressibilidade entra por ε = '+fmt(S.eps,3)+' e o Cd permanece em '+cd+'.';
   return 'Ajuste manual: V₂ = '+v+' m/s, ΔP = '+dp+' kPa, Mach '+m+' na garganta e Cd = '+cd+'. ΔP cresce aproximadamente com ṁ².';
 }
 function updateDom(){
   const S=state;
-  $('v-mdot').textContent=fmt(S.mdot,1);
-  $('v-q').textContent=fmt(S.Q,2);
+  $('v-mdot').textContent=fmt(S.mdot,2);
+  $('v-q').textContent=fmt(S.Q,3);
   $('v-vt').textContent=fmt(S.Vt,0);
   $('v-dp').textContent=fmt(S.dP/1000,S.dP<3000?2:1);
   $('v-cd').textContent=fmt(S.Cd,4);
-  $('v-cdnote').textContent='Re_D = '+fmt(S.Re/1e6,2)+' × 10⁶ · ISO 5167-3 raio longo';
+  $('v-cdnote').textContent='Re_D = '+fmt(S.Re/1e6,2)+' × 10⁶ · ISO 5167-3 · ISA 1932';
   $('v-p1').textContent=fmt(S.p1/1000,1);
   $('v-p2').textContent=fmt(S.p2/1000,1);
   $('v-mach').textContent=fmt(S.Mach,2);
   $('v-eps').textContent=fmt(S.eps,3);
   $('v-perm').textContent=fmt(S.perm/1000,2);
+  $('lg-lo').textContent=fmt(S.p0/1000,1)+' kPa';
   $('lg-hi').textContent=fmt(S.p2/1000,1)+' kPa';
-  $('flow-out').textContent=fmt(S.mdot,1)+' kg/s';
+  $('flow-out').textContent=fmt(S.mdot,2)+' kg/s';
   $('d-recirc').textContent=S.adverse?'Gradiente adverso detectado':'Nenhuma zona de recirculação';
   setDot('dt-recirc',S.adverse?'crit':'ok');
   $('d-grad').textContent=S.adverse?'Pressão sobe na convergência':'Favorável: dp/dx < 0 até a garganta';
@@ -523,7 +535,7 @@ function updateDom(){
   const mach=S.Mach;
   $('d-mach').textContent='M = '+fmt(mach,2)+(mach<0.8?' · subsônico':' · próximo do bloqueio');
   setDot('dt-mach',mach<0.8?'ok':(mach<0.95?'warn':'crit'));
-  const okRe=S.Re>=1e4&&S.Re<=1e7;
+  const okRe=S.Re>=7e4&&S.Re<=1e7;
   $('d-re').textContent='Re_D = '+fmt(S.Re/1e6,2)+' × 10⁶ · turbulento';
   setDot('dt-re',okRe?'ok':'warn');
   $('read-title').textContent='Leitura do regime · '+(modeKey==='custom'?'ajuste manual':MODES[modeKey].label);
@@ -533,7 +545,7 @@ function updateDom(){
 /* ---------- controles ---------- */
 const modeBtns=[...document.querySelectorAll('.modes button')];
 let seqOn=false, seqIdx=0, seqT=0;
-const SEQ=['idle','cruise','takeoff'], SEQ_DUR=7;
+const SEQ=['low','nominal','max'], SEQ_DUR=7;
 function applyMode(key){
   modeKey=key; target=MODES[key].mdot;
   modeBtns.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===key)));
@@ -555,7 +567,7 @@ $('flow').addEventListener('input',e=>{
 });
 document.addEventListener('keydown',e=>{
   if(e.target&&(e.target.tagName==='INPUT'))return;
-  const m={'1':'idle','2':'cruise','3':'takeoff'}[e.key];
+  const m={'1':'low','2':'nominal','3':'max'}[e.key];
   if(m){stopSeq();applyMode(m);}
 });
 
@@ -571,7 +583,7 @@ function frame(now){
   mdotCur+=(target-mdotCur)*(1-Math.exp(-dt/0.8));
   state=computeState(mdotCur);
   stepParticles(dt,state);
-  fanPhase+=dt*6.2832*(0.12+0.8*mdotCur/52);
+  fanPhase+=dt*6.2832*0.5; // turbina síncrona: rotação constante em qualquer carga
   draw();
   domT+=dt; if(domT>0.1){domT=0;updateDom();}
   requestAnimationFrame(frame);
